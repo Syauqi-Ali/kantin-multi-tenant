@@ -25,6 +25,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string|null $two_factor_recovery_codes
  * @property Carbon|null $two_factor_confirmed_at
  * @property string|null $remember_token
+ * @property string|null $role
+ * @property string $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
@@ -58,5 +60,25 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
         return Str::length($initials) > 1
             ? Str::substr($initials, 0, 1).Str::substr($initials, -1)
             : $initials;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role && $this->isActive();
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function isTenantOperator(): bool
+    {
+        return $this->hasRole('tenant');
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
     }
 }
