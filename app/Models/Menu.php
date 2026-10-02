@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTenant;
 use Database\Factories\MenuFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Menu extends Model
 {
     /** @use HasFactory<MenuFactory> */
-    use HasFactory;
+    use HasFactory, BelongsToTenant;
 
     // tenant_id & category_id di-set eksplisit/aturan domain, bukan mass assignment pelanggan.
     protected $fillable = ['name', 'base_price', 'stock_qty', 'is_available', 'prep_minutes'];
